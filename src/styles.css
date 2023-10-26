@@ -268,3 +268,7 @@ h1 {
   background: var(--color-warning);
   color: white;
 }
+
+button {
+  all: revert;
+}

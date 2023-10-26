@@ -11,14 +11,28 @@ import Keyboard from '../Keyboard';
 import LostBanner from '../LostBanner';
 import WonBanner from '../WonBanner';
 
-// Pick a random word on every pageload.
-const answer = sample(WORDS);
-// To make debugging easier, we'll log the solution in the console.
-console.info({ answer });
+function getNewAnswer() {
+  // Pick a random word on every pageload.
+  const newAnswer = sample(WORDS);
+
+  // To make debugging easier, we'll log the solution in the console.
+  console.info({ newAnswer });
+
+  return newAnswer;
+}
 
 function Game() {
+  const [answer, setAnswer] = new React.useState(() =>
+    getNewAnswer()
+  );
   const [gameStatus, setGameStatus] = new React.useState('running');
   const [guesses, setGuesses] = new React.useState([]);
+
+  function reloadGame() {
+    setAnswer(() => getNewAnswer());
+    setGameStatus('running');
+    setGuesses([]);
+  }
 
   function addGuess(guess) {
     const nextGuesses = [...guesses, guess];
@@ -45,9 +59,14 @@ function Game() {
       />
       <Keyboard checkedGuesses={checkedGuesses} />
       {gameStatus === 'won' && (
-        <WonBanner numOfGuesses={guesses.length} />
+        <WonBanner
+          numOfGuesses={guesses.length}
+          reloadGame={reloadGame}
+        />
       )}
-      {gameStatus === 'lost' && <LostBanner answer={answer} />}
+      {gameStatus === 'lost' && (
+        <LostBanner answer={answer} reloadGame={reloadGame} />
+      )}
     </>
   );
 }
