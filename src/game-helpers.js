@@ -53,3 +53,34 @@ export function checkGuess(guess, answer) {
 
   return result;
 }
+
+export function checkKeyboardKeys(checkedGuesses) {
+  const submittedKeys = {};
+
+  checkedGuesses.forEach((checkedGuess) => {
+    checkedGuess.forEach(({ letter, status }) => {
+      /**
+       * Prevent a past correct character to be marked as misplaced or incorrect, eg:
+       *    - answer: MONTH
+       *    - guess:  SOUTH (O is marked as correct)
+       *    - guess:  PIANO (O is marked as incorrect)
+       *
+       * Prevent a past misplaced character to be marked as incorrect, eg:
+       *    - answer: LABOR
+       *    - guess:  HELLO (first L is marked as misplaced, second one as incorrect)
+       *  */
+      // Prevent a past misplaced character
+      if (
+        submittedKeys[letter] === 'correct' ||
+        (status === 'incorrect' &&
+          submittedKeys[letter] === 'misplaced')
+      ) {
+        return;
+      }
+
+      submittedKeys[letter] = status;
+    });
+  });
+
+  return submittedKeys;
+}

@@ -230,3 +230,41 @@ h1 {
     transform: translateY(0%);
   }
 }
+
+/* Stretch goals styles */
+
+.keyboard {
+}
+
+.keyboard__row {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.keyboard__row + .keyboard__row {
+  margin-block-start: 4px;
+}
+
+.keyboard__key {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 32px;
+  block-size: 32px;
+  background: var(--color-gray-700);
+  border-radius: 4px;
+}
+
+.keyboard__key.correct {
+  background: var(--color-success);
+  color: white;
+}
+.keyboard__key.incorrect {
+  background: var(--color-gray-300);
+  color: white;
+}
+.keyboard__key.misplaced {
+  background: var(--color-warning);
+  color: white;
+}
